@@ -16,7 +16,7 @@ func (b *BlockChainIterator) PrintBlockChain() {
 	}
 }
 func PrintBlock(block *Block) {
-	fmt.Printf("block data :%s\n", block.d)
+	fmt.Printf("block data :%s\n", block.data)
 	fmt.Println("Version :", block.Version)
 	fmt.Printf("PrevBlockHash :%x\n", block.PrevBlockHash)
 	fmt.Printf("Hash :%x\n", block.Hash)

@@ -37,7 +37,7 @@ func (pow *ProofOfWork) PrepareRawData(nonce int64) []byte {
 		IntToByte(block.TimeStamp),
 		IntToByte(nonce),
 		IntToByte(targetBits),
-		block.d,
+		block.data,
 	}
 	data := bytes.Join(tmp, []byte{})
 	return data
