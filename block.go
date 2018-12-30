@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/gob"
 	"time"
 )
 
@@ -14,6 +16,28 @@ type Block struct {
 	data          []byte
 	Nonce         int64
 	MerKelRoot    []byte
+}
+
+/**
+对区块序列化
+ */
+func (block Block) Serialize() []byte {
+	var buffer bytes.Buffer
+	encoder := gob.NewEncoder(&buffer)
+	err := encoder.Encode(block)
+	CheckErr("Serialize",err)
+	return buffer.Bytes()
+}
+
+/**
+反序列化
+ */
+func Deserialize(data []byte) *Block {
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+	var block Block
+	err := decoder.Decode(&block)
+	CheckErr("Deserialize",err)
+	return &block
 }
 
 func NewBlock(data string, preBlockHash []byte) *Block {
