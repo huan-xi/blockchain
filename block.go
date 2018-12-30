@@ -1,8 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"crypto/sha256"
 	"time"
 )
 
@@ -10,7 +8,7 @@ import (
 type Block struct {
 	Version       int64
 	PrevBlockHash []byte
-	Hash          []byte //正常是不包含
+	Hash          []byte //比特币中是不包含
 	TimeStamp     int64
 	TargetBits    int64
 	data          []byte
@@ -18,32 +16,24 @@ type Block struct {
 	MerKelRoot    []byte
 }
 
-func (block *Block) SetHash() {
-	tmp := [][]byte{
-		IntToByte(block.Version),
-		block.PrevBlockHash,
-		IntToByte(block.TimeStamp),
-		block.MerKelRoot,
-		IntToByte(block.Nonce),
-	}
-	data := bytes.Join(tmp, []byte{})
-	hash := sha256.Sum256(data)
-	block.Hash = hash[:]
-}
-
 func NewBlock(data string, preBlockHash []byte) *Block {
 	block := &Block{
 		Version:       1,
 		PrevBlockHash: preBlockHash,
 		TimeStamp:     time.Now().Unix(),
-		TargetBits:    10,
-		Nonce:         5,
+		TargetBits:    targetBits,
+		Nonce:         0,
 		MerKelRoot:    []byte{},
 		data:          []byte(data),
 	}
-	block.SetHash()
+	pow := NewProofOfWork(block)
+	nonce, hash := pow.Run()
+	block.Nonce = nonce
+	block.Hash = hash
 	return block
 }
+
+//创世块
 func NewGenesisBlock() *Block {
 	return NewBlock("Genesis Block!", []byte{})
 }
