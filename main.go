@@ -3,19 +3,20 @@ package main
 import "fmt"
 
 func main() {
-	bc := NewBlockChain()
+	PrintBlock(Deserialize(NewGenesisBlock().Serialize()))
+	//bc := NewBlockChain()
 	//bc.AddBlock("第一次数据")
 	//bc.AddBlock("第二次数据")
-	BlockChainIterator := bc.Iterator()
-	BlockChainIterator.PrintBlockChain()
+	//BlockChainIterator := bc.Iterator()
+	//BlockChainIterator.PrintBlockChain()
 }
 func (b *BlockChainIterator) PrintBlockChain() {
-	for b.currentHash !=nil{
+	for b.currentHash != nil {
 		PrintBlock(b.Next())
 	}
 }
 func PrintBlock(block *Block) {
-	fmt.Printf("block data :%s\n", block.data)
+	fmt.Printf("block data :%s\n", block.d)
 	fmt.Println("Version :", block.Version)
 	fmt.Printf("PrevBlockHash :%x\n", block.PrevBlockHash)
 	fmt.Printf("Hash :%x\n", block.Hash)

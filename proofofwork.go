@@ -8,12 +8,12 @@ import (
 	"math/big"
 )
 
-const targetBits = 24
+const targetBits = 10
 
 /**
 工作量证明：
 根据nonce不同对不同的数据取hash值直到符合设定的难度值
- */
+*/
 type ProofOfWork struct {
 	block     *Block
 	targetBit *big.Int
@@ -37,7 +37,7 @@ func (pow *ProofOfWork) PrepareRawData(nonce int64) []byte {
 		IntToByte(block.TimeStamp),
 		IntToByte(nonce),
 		IntToByte(targetBits),
-		block.data,
+		block.d,
 	}
 	data := bytes.Join(tmp, []byte{})
 	return data
@@ -67,7 +67,6 @@ func (pow *ProofOfWork) IsValid() bool {
 	data := pow.PrepareRawData(pow.block.Nonce)
 	var HashInt big.Int
 	hash := sha256.Sum256(data)
-	fmt.Printf("%x", hash)
 	HashInt.SetBytes(hash[:])
 	return HashInt.Cmp(pow.targetBit) == -1
 }

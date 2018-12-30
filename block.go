@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/gob"
+	"fmt"
 	"time"
 )
 
@@ -20,23 +21,25 @@ type Block struct {
 
 /**
 对区块序列化
- */
+*/
 func (block Block) Serialize() []byte {
 	var buffer bytes.Buffer
+	block.data = []byte("fdsg")
 	encoder := gob.NewEncoder(&buffer)
 	err := encoder.Encode(block)
-	CheckErr("Serialize",err)
+	CheckErr("Serialize", err)
 	return buffer.Bytes()
 }
 
 /**
 反序列化
- */
+*/
 func Deserialize(data []byte) *Block {
 	decoder := gob.NewDecoder(bytes.NewReader(data))
 	var block Block
 	err := decoder.Decode(&block)
-	CheckErr("Deserialize",err)
+	fmt.Println(block.data)
+	CheckErr("Deserialize", err)
 	return &block
 }
 
